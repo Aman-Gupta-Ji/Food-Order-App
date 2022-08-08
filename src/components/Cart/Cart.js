@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
-import CartContext from "../../store/cart-context";
-import Modal from "../UI/Modal";
 
-import classes from "./Cart.module.css";
+import CartContext from "../../store/cart-context";
 import CartItem from "./CartItem";
+import Modal from "../UI/Modal";
+import classes from "./Cart.module.css";
 
 const Cart = (props) => {
   const cartCtx = useContext(CartContext);
@@ -29,7 +29,7 @@ const Cart = (props) => {
           amount={item.amount}
           price={item.price}
           onRemove={cartItemRemoveHandler.bind(null, item.id)}
-          onAdd={cardItemsAddHandler.bind(null, item.id)}
+          onAdd={cardItemsAddHandler.bind(null, item)}
         />
       ))}
     </ul>

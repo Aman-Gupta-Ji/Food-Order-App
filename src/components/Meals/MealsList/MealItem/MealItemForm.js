@@ -42,4 +42,4 @@ const MealItemForm = (props) => {
   );
 };
 
-export default MealItemForm;
+export default React.memo(MealItemForm);
