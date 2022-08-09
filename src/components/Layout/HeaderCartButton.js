@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 
 import classes from "./HeaderCartButton.module.css";
 import CartIcon from "../../assets/CartIcon";
@@ -10,9 +10,11 @@ function HeaderCartButton(props) {
   const cartCtx = useContext(CartContext);
   const { items } = cartCtx;
 
-  const numberOfCartItems = items.reduce((acc, item) => {
-    return acc + item.amount;
-  }, 0);
+  const numberOfCartItems = useMemo(() => {
+    return items.reduce((acc, item) => {
+      return acc + item.amount;
+    }, 0);
+  },[items]);
 
   const buttonClasses = `${classes.button} ${
     buttonHighlight ? classes.bump : ""
@@ -43,4 +45,4 @@ function HeaderCartButton(props) {
   );
 }
 
-export default HeaderCartButton;
+export default React.memo(HeaderCartButton);

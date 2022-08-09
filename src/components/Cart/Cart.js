@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useCallback, useContext } from "react";
 
 import CartContext from "../../store/cart-context";
 import CartItem from "./CartItem";
@@ -12,13 +12,15 @@ const Cart = (props) => {
 
   const hasItems = cartCtx.items.length > 0;
 
-  const cartItemRemoveHandler = (id) => {
-    cartCtx.removeItem(id);
-  };
+  const { removeItem, addItem } = cartCtx;
 
-  const cardItemsAddHandler = (item) => {
-    cartCtx.addItem({ ...item, amount: 1 });
-  };
+  const cartItemRemoveHandler = useCallback((id) => {
+    removeItem(id);
+  }, [removeItem]);
+
+  const cardItemsAddHandler = useCallback((item) => {
+    addItem({ ...item, amount: 1 });
+  }, [addItem]);
 
   const cardItems = (
     <ul className={classes["cart-items"]}>
