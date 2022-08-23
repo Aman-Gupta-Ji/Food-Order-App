@@ -49,17 +49,25 @@ const Cart = (props) => {
     setIsCheckOut(true);
   };
 
-  const submitOrderHandler = (userData) => {
-    fetch(
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [didSubmit, setDidSubmit] = React.useState(false);
+
+  const submitOrderHandler = async (userData) => {
+    setIsSubmitting(true);
+    const response = await fetch(
       "https://react-http-926be-default-rtdb.asia-southeast1.firebasedatabase.app/orders.json",
       {
         method: "POST",
         body: JSON.stringify({
           user: userData,
           orderedItems: cartCtx.items,
+          totalAmount: cartCtx.totalAmount,
         }),
       }
     );
+    setIsSubmitting(false);
+    setDidSubmit(true);
+    cartCtx.clearCart();
   };
 
   const modalActions = (
@@ -75,8 +83,8 @@ const Cart = (props) => {
     </div>
   );
 
-  return (
-    <Modal onClose={props.onClose}>
+  const cartModelContent = (
+    <React.Fragment>
       {cardItems}
       <div className={classes.total}>
         <span>Total Amount</span>
@@ -86,6 +94,27 @@ const Cart = (props) => {
         <CheckOut onConfirm={submitOrderHandler} onCancel={props.onClose} />
       )}
       {!isCheckOut && modalActions}
+    </React.Fragment>
+  );
+
+  const isSubmittingModelContent = <h3>Placing your order...</h3>;
+
+  const didSubmitModelContent = (
+    <React.Fragment>
+      <h3>Order Placed Succesfully :)</h3>
+      <div className={classes.actions}>
+        <button className={classes["button"]} onClick={props.onClose}>
+          Close
+        </button>
+      </div>
+    </React.Fragment>
+  );
+
+  return (
+    <Modal onClose={props.onClose}>
+      {!isSubmitting && !didSubmit && cartModelContent}
+      {isSubmitting && isSubmittingModelContent}
+      {didSubmit && !isSubmitting && didSubmitModelContent}
     </Modal>
   );
 };
