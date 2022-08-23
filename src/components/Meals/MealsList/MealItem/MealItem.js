@@ -15,7 +15,7 @@ const MealItem = (props) => {
       amount: amount,
       price: props.price,
     });
-  }, []);
+  }, [cartCtx, props.id, props.name, props.price]);
 
   return (
     <li className={classes.meal}>
